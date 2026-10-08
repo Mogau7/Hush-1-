@@ -1,0 +1,759 @@
+<html>
+    <html lang="en">
+        <head>
+            <meta charset="utf-8"><meta name="hush-api" content=""><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hush — Easy does it.</title>
+
+<style>
+:root{
+    --ice:#8fd3e8;
+    --mist:#a9b7ff;
+    --text:#e8f1f6;
+    --mute:#8fa6b6;
+    --line:#ffffff1a;
+    --acc:#8fd3e8
+}
+
+*{
+    box-sizing:border-box
+}
+
+html{
+    scroll-behavior:smooth
+}
+
+body{
+    margin:0;
+    color:var(--text);
+    font:16px/1.65 system-ui,'Segoe UI',sans-serif;
+    background:hsl(205 45% 17%);
+    transition:background .3s
+}
+
+body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background:radial-gradient(900px 420px at 50% -120px,#bff1ff44,transparent 70%);
+    pointer-events:none;
+    z-index:0
+}
+
+canvas{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none
+}
+
+header,section,footer{
+    position:relative;
+    z-index:1;
+    max-width:980px;
+    margin:0 auto;
+    padding:0 22px
+}
+
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-top:22px
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-weight:600;
+    letter-spacing:.4em
+}
+
+nav a{
+    color:var(--mute);
+    text-decoration:none;
+    margin-left:20px;
+    font-size:14px
+}
+
+nav a:hover{
+    color:var(--ice)
+}
+
+section{
+    padding-top:110px;
+    padding-bottom:20px
+}
+
+.hero{
+    min-height:88vh;
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:30px;
+    align-items:center;
+    padding-top:40px
+}
+
+.m{
+    font-size:12px;
+    letter-spacing:.3em;
+    color:var(--acc);
+    margin-bottom:10px
+}
+
+h1{
+    font-size:clamp(36px,6vw,60px);
+    line-height:1.08;
+    margin:0 0 16px;
+    font-weight:600
+}
+
+h1 em{
+    font-style:normal;
+    color:var(--ice)
+}
+
+h2{
+    font-size:30px;
+    margin:0 0 6px;
+    font-weight:600
+}
+
+.sub,.lead{
+    color:var(--mute);
+    max-width:520px
+}
+
+.lead{
+    font-size:18px
+}
+
+.btn{
+    position:relative;
+    overflow:hidden;
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:14px 28px;
+    border:0;
+    border-radius:999px;
+    cursor:pointer;
+    font:600 15px inherit;
+    text-decoration:none;
+    color:#06202b;
+    background:linear-gradient(160deg,#d6f3fa,var(--acc) 60%,#7fb4d6);
+    box-shadow:inset 0 -3px 6px #0003,inset 0 2px 4px #fff9,0 10px 26px #0005;
+    transition:transform .3s,box-shadow .3s
+}
+
+.btn:hover{
+    transform:translateY(-3px)
+}
+
+.ghost{
+    background:#ffffff0d;
+    color:var(--ice);
+    box-shadow:inset 0 0 0 1px #8fd3e877
+}
+
+.rip{
+    position:absolute;
+    border-radius:50%;
+    background:#ffffff77;
+    transform:scale(0);
+    animation:rp .8s ease-out forwards;
+    pointer-events:none
+}
+
+@keyframes rp{
+    to{
+        transform:scale(1);
+        opacity:0
+    }
+}
+
+.water{
+    position:relative;
+    text-align:center
+}
+
+.water svg{
+    width:210px;
+    animation:fl 5s ease-in-out infinite
+}
+
+.water .r{
+    transform:scaleY(-1);
+    opacity:.18;
+    margin-top:-6px;
+    animation:fl 5s ease-in-out infinite reverse;
+    -webkit-mask-image:linear-gradient(#000,transparent 60%);
+    mask-image:linear-gradient(#000,transparent 60%)
+}
+
+@keyframes fl{
+    50%{
+        transform:translateY(-10px)
+    }
+}
+
+.panel{
+    background:#ffffff0d;
+    border:1px solid var(--line);
+    border-radius:26px;
+    padding:24px;
+    backdrop-filter:blur(8px)
+}
+
+.steps{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin-top:24px
+}
+.steps .panel{
+    text-align:center
+}
+
+.bub{
+    width:54px;
+    height:54px;
+    border-radius:50%;
+    margin:0 auto 12px;
+    display:grid;
+    place-items:center;
+    font-weight:600;
+    color:var(--ice);
+    border:1px solid #8fd3e888;
+    background:radial-gradient(circle at 30% 30%,#ffffff33,#8fd3e81a)
+}
+
+.panel h3{
+    margin:0 0 4px
+}
+
+.panel p{
+    margin:0;
+    color:var(--mute);
+    font-size:14px
+}
+
+.dial{
+    display:grid;
+    grid-template-columns:.8fr 1.2fr;
+    gap:30px;
+    align-items:center;
+    margin-top:24px
+}
+
+.dial svg{
+    width:170px;
+    display:block;
+    margin:auto;
+    transition:.4s
+}
+
+.peb{
+    display:flex;
+    gap:14px;
+    margin:16px 0
+}
+
+.pb{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    border:2px solid transparent;
+    cursor:pointer;
+    box-shadow:inset 0 -4px 8px #0004,inset 0 3px 6px #fff6,0 8px 18px #0005;
+    transition:.3s
+}
+
+.pb.on{
+    border-color:#fff;
+    transform:scale(1.15)
+}
+
+.meta{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:12px
+}
+
+.meta span{
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:4px 14px;
+    font-size:13px;
+    color:var(--mute)
+}
+
+input,select{
+    width:100%;
+    padding:13px 16px;
+    margin-bottom:10px;
+    border-radius:16px;
+    border:1px solid var(--line);
+    background:#0000002e;
+    color:var(--text);
+    font:inherit
+}
+
+input:focus,select:focus{
+    outline:0;
+    border-color:var(--ice)
+}
+
+select option{
+    color:#000
+}
+
+.two{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px
+}
+
+.slots{
+    display:flex;
+    gap:10px;
+    margin:8px 0 14px
+}
+
+.slot{
+    flex:1;
+    text-align:center;
+    font-size:12px;
+    padding:12px 4px;
+    border-radius:16px;
+    border:1px dashed #ffffff33;
+    color:var(--mute)
+}
+
+.slot.on{
+    border:1px solid var(--ice);
+    color:var(--ice);
+    background:#8fd3e814
+}
+
+.msg{
+    font-size:14px;
+    min-height:42px;
+    margin-top:10px;
+    color:var(--mute)
+}
+
+.err{
+    color:#ffa3b5
+}
+
+.win{
+    display:none;
+    margin-top:10px;
+    padding:14px;
+    border-radius:16px;
+    text-align:center;
+    font-weight:600;
+    color:var(--ice);
+    background:#8fd3e822
+}
+
+.demo{
+    font-size:13px;
+    color:var(--mute)
+}
+
+.demo button{
+    background:none;
+    border:0;
+    color:var(--mist);
+    text-decoration:underline;
+    cursor:pointer;
+    font:inherit
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px
+}
+
+td,th{
+    text-align:left;
+    padding:7px 3px;
+    border-bottom:1px solid var(--line)
+}
+
+th{
+    color:var(--mute);
+    font-weight:500
+}
+
+ul{
+    margin:6px 0;
+    padding-left:18px;
+    color:var(--mute)
+}
+
+footer{
+    padding:100px 22px 50px;
+    text-align:center;
+    color:var(--mute);
+    font-size:13px
+}
+
+#gauge{
+    position:fixed;
+    right:18px;
+    top:20%;
+    height:60%;
+    width:2px;
+    background:#ffffff22;
+    z-index:5
+}
+
+#mk{
+    position:absolute;
+    left:-5px;
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    background:var(--ice);
+    box-shadow:0 0 12px var(--ice)
+}
+
+#m{
+    position:absolute;
+    right:16px;
+    top:-24px;
+    font-size:11px;
+    letter-spacing:.15em;
+    color:var(--mute);
+    white-space:nowrap;
+    transform:translateX(30%)
+}
+
+#intro{
+    position:fixed;
+    inset:0;
+    z-index:50;
+    display:grid;
+    place-items:center;
+    background:radial-gradient(600px 400px at 50% 45%,#1b4a6a,#0b1d2b 70%);
+    transition:opacity 1s
+}
+
+#intro.hide{
+    opacity:0;
+    pointer-events:none
+}
+
+body.lock{
+    overflow:hidden
+}
+
+.stage{
+    position:relative;
+    width:170px;
+    text-align:center
+}
+
+.halo{
+    position:absolute;
+    left:50%;
+    top:38%;
+    width:260px;
+    height:260px;
+    margin:-130px;
+    border-radius:50%;
+    background:radial-gradient(#8fd3e855,transparent 65%);
+    animation:ha 3s 1s both
+}
+
+@keyframes ha{
+    from{
+        transform:scale(.3);
+        opacity:0
+    }
+    50%{
+        opacity:1
+    }
+    to{
+        transform:scale(1.5);
+        opacity:.5
+    }
+}
+
+.icn{
+    position:relative;
+    animation:rise 1.8s cubic-bezier(.2,.8,.2,1) both,fl 4s 1.8s ease-in-out infinite
+}
+
+@keyframes rise{
+    from{
+        opacity:0;
+        transform:translateY(90px) rotate(-14deg) scale(.8)
+    }
+    to{
+        opacity:1;transform:none
+    }
+}
+
+.wm{
+    margin-top:18px;
+    font-size:34px;
+    letter-spacing:.5em;
+    padding-left:.5em;
+    font-weight:600
+}
+
+.wm span{
+    display:inline-block;
+    opacity:0;
+    animation:up .8s both
+}
+
+@keyframes up{
+    from{
+        opacity:0;
+        transform:translateY(14px);
+        filter:blur(6px)
+    }
+    to{
+        opacity:1;
+        transform:none;
+        filter:none
+    }
+}
+
+.sl{
+    color:var(--mute);
+    letter-spacing:.18em;
+    font-size:13px;
+    opacity:0;
+    animation:up 1s 3.2s both
+}
+
+.bb{
+    position:absolute;
+    border-radius:50%;
+    border:1px solid #8fd3e8aa;
+    animation:bu 2.4s ease-out both
+}
+
+@keyframes bu{
+    to{
+        transform:translateY(-120px);
+        opacity:0
+    }
+}
+
+.skip{
+    position:absolute;
+    bottom:28px;
+    right:28px;
+    background:none;
+    border:0;
+    color:var(--mute);
+    cursor:pointer;
+    font:13px inherit;
+    letter-spacing:.1em
+}
+
+@media(max-width:760px){.hero,.dial,.two,.steps{
+    grid-template-columns:1fr
+    }nav,#gauge{display:none}
+    }  
+    </style>
+</head>
+
+<body class="lock">
+    <div id="intro">
+        <div class="stage">
+            <div class="halo"></div>
+            <div class="icn" id="icn"></div>
+            <div class="wm" id="wm"></div>
+            <div class="sl">EASY DOES IT.</div>
+        </div>  
+        <button class="skip" onclick="endIntro()">SKIP</button>
+    </div>
+
+    <canvas id="c"></canvas>
+    <div id="gauge"><div id="m">0 m</div>
+    <div id="mk"></div>
+</div>
+
+    <header>
+        <div class="brand">
+            <span id="l1"></span>HUSH</div>
+            <nav><a href="#how">What it is</a>
+                <a href="#flavors">Flavors</a>
+                <a href="#whisper">Whisper</a>
+                <a href="#reserve">Reserve</a>
+            </nav>
+        </header>
+
+    <section class="hero">
+        <div>
+            <div class="m">SURFACE · TOUCH THE WATER</div>
+            <h1>A soda that <em>keeps quiet</em> until you ask.</h1>
+            <p class="lead">Hush is a zero-sugar sparkling drink in three flavors. Every can hides a whispered code. Collect all three and a secret opens: a midnight drop with a free case and early access to new flavors.</p>
+            <p style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="#reserve">Reserve a case</a>
+                <a class="btn ghost" href="#how">Dive in</a>
+            </p>
+        </div>
+            <div class="water" id="hero"></div>
+        </section>
+
+    <section id="how">
+        <div class="m">5 M · WHAT IT IS</div>
+        <h2>Drink. Listen. Unlock.</h2>
+        <p class="sub">Nothing loud here. Three small steps.</p>
+        <div class="steps">
+            <div class="panel">
+                <div class="bub">1</div>
+                <h3>Open a can</h3>
+                <p>The code sits under the tab.</p>
+            </div>
+            <div class="panel">
+                <div class="bub">2</div>
+                <h3>Whisper it</h3>
+                <p>Enter it below to reveal one fragment of a hidden message.</p>
+            </div>
+            <div class="panel">
+                <div class="bub">3</div>
+                <h3>Reach the bottom</h3>
+                <p>Three flavors, three fragments, one reward.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="flavors">
+        <div class="m">12 M · FLAVORS</div>
+        <h2>Pick one. Drift.</h2>
+        <p class="sub">330 ml · zero sugar · 12 kcal · R29 a can</p>
+        <div class="panel dial">
+            <div id="big"></div>
+            <div>
+                <h3 id="fn" style="font-size:26px;margin:0"></h3>
+                <div class="m" id="ft" style="margin:4px 0"></div>
+                <div class="peb" id="peb"></div>
+                <p id="fd" class="sub" style="margin:0"></p>
+                <div class="meta">
+                    <span>330 ml</span>
+                    <span>No caffeine</span>
+                    <span>Serve chilled</span>
+                    <span>Recyclable can</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="whisper">
+        <div class="m">20 M · WHISPER</div>
+        <h2>Enter your code</h2>
+        <p class="sub" id="st">Type your name and the code from your can.</p>
+        <div class="two" style="margin-top:22px">
+            <div class="panel">
+                <input id="op" placeholder="Your name" maxlength="30">
+                <input id="code" placeholder="Code, e.g. ECL-A1B2C3-D0ECC1">
+                <button class="btn" onclick="scan()">Reveal fragment</button>
+            </div>
+
+            <div class="panel">
+                <h3 style="margin:0">Your fragments</h3>
+                <div class="slots" id="slots"></div>
+                <div class="win" id="win">SOMETHING QUIET HAPPENS AT MIDNIGHT<br><small>Unlocked: a free case + early access</small></div>
+                <h3 style="margin:18px 0 4px">Quietest regulars</h3>
+                <table>
+                    <tbody id="lb">
+                        <tr><td style="color:var(--mute)">No one yet</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section id="reserve">
+        <div class="m">30 M · THE BOTTOM</div>
+        <h2>Reserve a case</h2>
+        <p class="sub">12 cans for R320. Pay on delivery. We'll email when the drop lands.</p>
+        <div class="two" style="margin-top:22px">
+            <div class="panel">
+                <input id="on" placeholder="Name">
+                <input id="oe" type="email" placeholder="Email">
+                <select id="of">
+                    <option value="MIX">Mixed case (all three)</option>
+                    <option value="ECL">Eclipse</option>
+                    <option value="STA">Static</option>
+                    <option value="GHO">Ghost</option>
+                </select>
+                <select id="oq">
+                    <option value="1">1 case · R320</option>
+                    <option value="2">2 cases · R640</option>
+                    <option value="3">3 cases · R960</option>
+                </select>
+                <button class="btn" onclick="order()">Reserve</button>
+                <div class="msg" id="om"></div>
+            </div>
+            <div class="panel">
+                <h3 style="margin-top:0">What's inside</h3>
+                <ul>
+                    <li>Carbonated water</li>
+                    <li>Natural flavor</li>
+                    <li>Citric acid</li>
+                    <li>Stevia leaf extract</li>
+                </ul>
+                <h3>Per 330 ml</h3>
+                <ul>
+                    <li>12 kcal · 0 g sugar · 0 g fat</li>
+                    <li>No caffeine</li>
+                </ul>
+                <p class="sub" style="font-size:12px">Sample details. Edit to match your product.</p>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <span id="l2"></span><br>Easy does it. · © 2026 Hush · One code per can, valid once.
+    </footer>
+
+<script>
+const $=id=>
+document.getElementById(id),API=(document.querySelector('meta[name=hush-api]').content||('http://'+(location.hostname||'localhost')+':8080')).replace(/\/$/,'');
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const FL={ECL:['Eclipse','Black cherry','#4a58c9','#2a3278','Deep and slightly tart. Made for evenings.'],STA:['Static','Electric lime','#35a58e','#1c6a5c','Bright, clean and cold. Made for afternoons.'],GHO:['Ghost','White peach','#c98f9e','#8a5a6a','Soft and barely there. Made for mornings.']};
+const logo=s=>`<svg viewBox="0 0 64 64" width="${s}" height="${s}"><defs><linearGradient id="lg${s}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8fd3e8"/><stop offset="1" stop-color="#a9b7ff"/></linearGradient></defs><circle cx="32" cy="32" r="28" fill="none" stroke="url(#lg${s})" stroke-width="2.5"/><circle cx="32" cy="32" r="19" fill="url(#lg${s})"/><circle cx="39" cy="28" r="17" fill="#16384f"/><circle cx="44" cy="19" r="2.6" fill="#8fd3e8"/><circle cx="49" cy="29" r="1.6" fill="#a9b7ff"/></svg>`;
+$('l1').innerHTML=logo(44);$('l2').innerHTML=logo(40);
+const can=(i,v)=>{const[n,,a,b]=v;return`<svg viewBox="0 0 120 220"><defs><linearGradient id="g${i}" x1="0" x2="1"><stop offset="0" stop-color="${b}"/><stop offset=".45" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><path d="M20 36Q20 28 60 26Q100 28 100 36V190Q100 204 60 206Q20 204 20 190Z" fill="url(#g${i})"/><ellipse cx="60" cy="34" rx="40" ry="9" fill="#cfd8e6"/><ellipse cx="60" cy="33" rx="30" ry="6" fill="#9aa8bd"/><circle cx="60" cy="100" r="27" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="2"/><circle cx="60" cy="100" r="18" fill="#fff" fill-opacity=".92"/><circle cx="66" cy="96" r="16" fill="${a}"/><text x="60" y="152" text-anchor="middle" font-size="11" fill="#fff" letter-spacing="3" font-family="sans-serif" font-weight="600">${n.toUpperCase()}</text><text x="60" y="170" text-anchor="middle" font-size="7" fill="#fff" fill-opacity=".7" letter-spacing="2" font-family="sans-serif">330 ML · ZERO SUGAR</text><rect x="30" y="42" width="8" height="146" rx="4" fill="#fff" fill-opacity=".2"/></svg>`};
+$('icn').innerHTML=can('i',['Hush','','#5aa6c4','#22485e']);
+$('wm').innerHTML=[...'HUSH'].map((l,i)=>`<span style="animation-delay:${2.1+i*.2}s">${l}</span>`).join('');
+setTimeout(()=>{for(let i=0;i<22;i++){const b=document.createElement('i');b.className='bb';const r=3+Math.random()*7;b.style.cssText=`width:${r}px;height:${r}px;left:${40+Math.random()*90}px;top:${30+Math.random()*20}px;animation-delay:${Math.random()*1.2}s`;$('icn').appendChild(b)}},1500);
+function endIntro(){const e=$('intro');if(!e)return;e.classList.add('hide');document.body.classList.remove('lock');setTimeout(()=>e.remove(),1100)}setTimeout(endIntro,5200);
+const hv=['Hush','','#5aa6c4','#22485e'];$('hero').innerHTML=can('h',hv)+`<div class="r">${can('hr',hv)}</div>`;
+let cur='ECL';function pick(k){cur=k;const v=FL[k];$('big').innerHTML=can('b'+k,v);$('fn').textContent=v[0];$('ft').textContent=v[1].toUpperCase();$('fd').textContent=v[4];document.documentElement.style.setProperty('--acc',v[2]==='#4a58c9'?'#9aa8ff':v[2]==='#35a58e'?'#6fe0c4':'#f0b3c2');[...$('peb').children].forEach(b=>b.classList.toggle('on',b.dataset.k===k))}
+$('peb').innerHTML=Object.entries(FL).map(([k,v])=>`<button class="pb" data-k="${k}" title="${v[0]}" style="background:radial-gradient(circle at 30% 30%,#fff6,${v[2]} 55%,${v[3]})" onclick="pick('${k}')"></button>`).join('');pick('ECL');
+document.addEventListener('click',e=>{const b=e.target.closest('.btn');if(!b)return;const r=b.getBoundingClientRect(),s=Math.max(r.width,r.height)*2,p=document.createElement('span');p.className='rip';p.style.cssText=`width:${s}px;height:${s}px;left:${e.clientX-r.left-s/2}px;top:${e.clientY-r.top-s/2}px`;b.appendChild(p);setTimeout(()=>p.remove(),800)});
+const got={},frag={};function slots(){$('slots').innerHTML=Object.entries(FL).map(([k,v])=>`<div class="slot ${got[k]?'on':''}">${v[0]}<br>${got[k]?frag[k]:'locked'}</div>`).join('')}slots();
+function d(c){$('code').value=c}function log(t,e){$('log').innerHTML=`<span class="${e?'err':''}">${t}</span>`}
+async function scan(){const Operative=$('op').value.trim(),Code=$('code').value.trim().toUpperCase();if(!Operative||!Code)return log('Please enter your name and a code.',1);let r;
+ try{const x=await fetch(API+'/api/scan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({Operative,Code})});r=await x.json().catch(()=>({}));
+  if(!x.ok)return log(x.status===409?'This code was already used.':x.status===429?'Slow down a little, then try again.':x.status===503?'The code checker is down. Try again soon.':x.status===400?'That code is not valid.':'Something went wrong. Try again.',1)}
+ catch{return log('Could not reach the server. Is it running?',1)}
+ got[r.flavor]=1;frag[r.flavor]=r.fragment;slots();log('Fragment: <b>'+esc(r.fragment)+'</b>');if(r.unlocked)$('win').style.display='block';info()}
+async function info(){try{const l=await(await fetch(API+'/api/leaderboard')).json();if(Array.isArray(l)&&l.length)$('lb').innerHTML=l.map(x=>`<tr><td>${esc(x.operative)}</td><td>${esc(x.fragments)}/3</td></tr>`).join('');const s=await(await fetch(API+'/api/stats')).json();if(s&&s.scans!=null)$('st').textContent=`${s.scans} cans opened so far by ${s.operatives} people.`}catch{}}info();
+async function order(){const m=$('om'),o={Name:$('on').value.trim(),Email:$('oe').value.trim(),Flavor:$('of').value,Qty:+$('oq').value};m.className='msg';
+ if(!o.Name||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(o.Email)){m.className='msg err';m.textContent='Please enter your name and a valid email.';return}
+ try{const x=await fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(o)}),r=await x.json().catch(()=>({}));
+  if(!x.ok){m.className='msg err';m.textContent=x.status===429?'Slow down a little, then try again.':'Check your details and try again.';return}
+  m.textContent='Reserved. Your reference is '+r.reference+'.'}
+ catch{m.className='msg err';m.textContent='Could not reach the server. Is it running?'}}
+const c=$('c'),x=c.getContext('2d');let W,H,R=[],last=0;const bs=[...Array(30)].map(()=>({x:Math.random(),y:Math.random(),r:2+Math.random()*5,s:.1+Math.random()*.3}));
+function rs(){W=c.width=innerWidth;H=c.height=innerHeight}rs();addEventListener('resize',rs);
+addEventListener('pointermove',e=>{if(Date.now()-last>110){last=Date.now();R.push({x:e.clientX,y:e.clientY,r:2,a:.35})}});addEventListener('pointerdown',e=>R.push({x:e.clientX,y:e.clientY,r:2,a:.6}));
+(function t(){x.clearRect(0,0,W,H);bs.forEach(b=>{b.y-=b.s/H*3;if(b.y<-.02)b.y=1.02;x.strokeStyle='rgba(143,211,232,.16)';x.beginPath();x.arc(b.x*W+Math.sin(b.y*9)*8,b.y*H,b.r,0,7);x.stroke()});
+ R=R.filter(p=>p.a>0);R.forEach(p=>{p.r+=1.4;p.a-=.006;x.strokeStyle=`rgba(190,235,250,${p.a})`;x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.stroke()});requestAnimationFrame(t)})();
+function dp(){const m=document.documentElement.scrollHeight-innerHeight,v=m>0?scrollY/m:0;document.body.style.background=`hsl(205 45% ${17-v*11}%)`;$('m').textContent=Math.round(v*30)+' m';$('mk').style.top=v*100+'%'}addEventListener('scroll',dp);dp();
+        </script>
+    </body>
+</html>
