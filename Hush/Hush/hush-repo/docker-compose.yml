@@ -1,0 +1,27 @@
+services:
+  sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment: { ACCEPT_EULA: "Y", MSSQL_SA_PASSWORD: "${SA_PASSWORD:-Str0ng!Pass}" }
+    volumes: ["hush-sql:/var/opt/mssql"]
+    ports: ["127.0.0.1:1433:1433"]
+    restart: unless-stopped
+  mint:
+    build: ./mint
+    environment: { FIZZ_KEY: "${FIZZ_KEY:-change-me}", FIZZ_ADMIN: "${FIZZ_ADMIN:-dev-admin}" }
+    ports: ["127.0.0.1:8081:8081"]
+    restart: unless-stopped
+  api:
+    build: ./api
+    environment:
+      ConnectionStrings__db: "Server=sql;Database=Hush;User Id=sa;Password=${SA_PASSWORD:-Str0ng!Pass};TrustServerCertificate=true"
+      MINT_URL: "http://mint:8081"
+    ports: ["8080:8080"]
+    depends_on: [sql, mint]
+    restart: unless-stopped
+  web:
+    image: nginx:alpine
+    volumes: ["./web:/usr/share/nginx/html:ro"]
+    ports: ["3000:80"]
+    restart: unless-stopped
+volumes:
+  hush-sql:
